@@ -31,15 +31,15 @@ def welcome():
 
         f"Available Routes:<br/>"
 
-        f"/api/v1.0/precipitation<br/>"
+        f"api/v1.0/precipitation<br/>"
 
-        f"/api/v1.0/stations<br/>"
+        f"api/v1.0/stations<br/>"
 
-        f"/api/v1.0/tobs<br/>"
+        f"api/v1.0/tobs<br/>"
 
-        f"/api/v1.0/<start> the start date only, calculate TMIN, TAVG, and TMAX for all dates greater than and equal to the start date <br/>"
+        f"api/v1.0/<start> the start date only, calculate TMIN, TAVG, and TMAX for all dates greater than and equal to the start date <br/>"
 
-        f"/api/v1.0/<start>/<end> the start and the end date, calculate the TMIN, TAVG, and TMAX for dates between the start and end date inclusive <br/>"
+        f"api/v1.0/<start>/<end> the start and the end date, calculate the TMIN, TAVG, and TMAX for dates between the start and end date inclusive <br/>"
     )
 
 @app.route("/api/v1.0/precipitation")
