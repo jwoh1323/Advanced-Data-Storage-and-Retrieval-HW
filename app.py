@@ -1,4 +1,6 @@
 import numpy as np
+import datetime as dt
+import pandas as pd
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -8,7 +10,7 @@ from sqlalchemy import create_engine, func
 from flask import Flask, jsonify
 
 
-engine = create_engine("sqlite:///hawaii.sqlite")
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 Base = automap_base()
 
@@ -26,12 +28,18 @@ def welcome():
     
     return (
         f"Welcome to my homepage!<br/>"
+
         f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation"
-        f"/api/v1.0/stations"
-        f"/api/v1.0/tobs"
-        f"/api/v1.0/<start>"
-        f"/api/v1.0/<start>/<end>"
+
+        f"/api/v1.0/precipitation<br/>"
+
+        f"/api/v1.0/stations<br/>"
+
+        f"/api/v1.0/tobs<br/>"
+
+        f"/api/v1.0/start<br/>"
+
+        f"/api/v1.0/start&end<br/>"
     )
 
 @app.route("/api/v1.0/precipitation")
@@ -39,8 +47,7 @@ def welcome():
 def precipitation():
 
     results = session.query(Measurement.date, Measurement.prcp).\
-        filter(Measurement.date > '2016-08-24').\
-        filter(Measurement.date <= '2017-08-23').\
+        filter(Measurement.date > '2016-08-22').\
         order_by(Measurement.date).\
         all()
 
@@ -52,7 +59,8 @@ def precipitation():
 
 def stations():
 
-    station = session.query(Station.station, Station.name).all()
+    station = session.query(Station.station, Station.name).\
+    all()
 
     return jsonify(station)
 
@@ -65,20 +73,20 @@ def stations():
 def tobs():
 
     temp = session.query(Measurement.date, Measurement.station, Measurement.tobs).\
-    filter(Measurement.date > '2016-08-24').\
-    filter(Measurement.date <= '2017-08-23').\
+    filter(Measurement.date > '2016-08-22').\
     all()
 
     return jsonify(temp)
 
 
 
-@app.route("/api/v1.0/<start>")
+@app.route("/api/v1.0/start")
 
-def startDateOnly(start):
+def startDateOnly():
 
     result = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-    filter(Measurement.date >= start).all()
+    filter(Measurement.date >= '2017-01-01').\
+    all()
 
     return jsonify(result)
 
@@ -86,13 +94,14 @@ def startDateOnly(start):
 
 
 
-@app.route("/api/v1.0/<start>/<end>")
+@app.route("/api/v1.0/start&end")
 
-def startDateEndDate(start,end):
+def startDateEndDate():
 
     result = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-    filter(Measurement.date >= start).\
-    filter(Measurement.date <= end).all()
+    filter(Measurement.date >= '2017-01-01').\
+    filter(Measurement.date <= '2018-01-01').\
+    all()
 
     return jsonify(result)
 
