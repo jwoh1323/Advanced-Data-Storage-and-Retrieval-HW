@@ -46,12 +46,12 @@ def welcome():
 
 def precipitation():
 
-    results = session.query(Measurement.date, Measurement.prcp).\
+    prcp = session.query(Measurement.date, Measurement.prcp).\
         filter(Measurement.date > '2016-08-22').\
         order_by(Measurement.date).\
         all()
 
-    return jsonify(results)
+    return jsonify(prcp)
 
 
 
